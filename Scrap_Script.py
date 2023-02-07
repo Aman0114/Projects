@@ -48,7 +48,7 @@ class scrap:
         for i in range(1,n+1):
             strrs=self.doctor_links(i)
             s=s.union(strrs)
-            break    
+            # break    
         return s
     def get_info(self,links):
         dictt={"Name":[],"Experience":[],"Qualification":[],"Speciality":[],"Votes":[],'fee':[],'dp_score':[]}
@@ -63,6 +63,8 @@ if __name__ == "__main__":
     import requests
     import numpy as np
     import pandas as pd
+    import matplotlib.pyplot as plt
+    import seaborn as sns
     city=input("Enter city to fetch doctors from that city\n")
     Specialist=input("Enter doctor speciality\n")
     n=int(input("Enter no of pages to scrap\n"))
@@ -72,4 +74,21 @@ if __name__ == "__main__":
     info=scrap_.get_info(links)
     df=pd.DataFrame(info)
 
-    print(df)      
+    # df=df.iloc[:,1:]
+    X=lambda x: x.strip(" ")
+    try:
+        df['Votes']=df['Votes'].str.replace("(","")
+        df['Votes']=df['Votes'].str.replace(")","")
+        df['Votes']=df['Votes'].str.replace("votes","")
+        df['fee']=df['fee'].str.replace("fee","")
+        df['fee']=df['fee'].str.replace("₹","")
+        df['dp_score']=df['dp_score'].str.replace("%","")
+        for i in range(len(df['Votes'])):
+            df['Votes'][i]=X(df['Votes'][i])
+            df['fee'][i]=X(df['fee'][i])
+            df['dp_score'][i]=X(df['dp_score'][i])
+    except:
+        pass
+    df.to_csv('Data.csv')
+    # sns.histplot(df["Experience"],hist=True,kde=True)
+    # plt.ylabel("Count of Doctors")     

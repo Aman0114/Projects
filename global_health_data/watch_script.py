@@ -34,7 +34,7 @@ def upload_to_gcs(local_file_path):
 
     for i in range(10):
         if is_file_ready(local_file_path):
-            blob.upload_from_filename(local_file_path)
+            blob.upload_from_filename(local_file_path,timeout=300)
             print(f"✅ Uploaded: {local_file_path} → gs://{BUCKET_NAME}/{blob_path}")
             return
         else:

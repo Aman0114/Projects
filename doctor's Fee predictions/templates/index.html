@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Fee Prediction</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 700px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        h2 {
+            color: #2c3e50;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+            width: 100%;
+            padding: 10px;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+        .alert {
+            margin-top: 30px;
+            text-align: center;
+        }
+        select, input {
+            border-radius: 5px;
+            padding: 10px;
+        }
+        select:focus, input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Doctor Consultation Fee Predictor</h2>
+        <form action="/predict" method="post">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="city" class="form-label">City</label>
+                    <select class="form-select" id="city" name="city" required>
+                        <option value="" disabled selected>Select city</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Bangalore">Bangalore</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="speciality_of_doctor" class="form-label">Speciality</label>
+                    <select class="form-select" id="speciality_of_doctor" name="speciality_of_doctor" required>
+                        <option value="" disabled selected>Select speciality</option>
+                        {% for spec in specialities %}
+                            <option value="{{ spec }}">{{ spec }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="qualification" class="form-label">Qualification</label>
+                    <select class="form-select" id="qualification" name="qualification" required>
+                        <option value="" disabled selected>Select qualification</option>
+                        <option value="BDS">BDS</option>
+                        <option value="BHMS">BHMS</option>
+                        <option value="BPTh/BPT">BPTh/BPT</option>
+                        <option value="MA">MA</option>
+                        <option value="MBBS">MBBS</option>
+                        <option value="MD">MD</option>
+                        <option value="MS">MS</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="year_of_experiance" class="form-label">Years of Experience</label>
+                    <input type="number" class="form-control" id="year_of_experiance" name="year_of_experiance" 
+                           min="0" max="50" placeholder="Enter years" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="dp_score" class="form-label">Doctor Rating (%)</label>
+                    <input type="number" class="form-control" id="dp_score" name="dp_score" 
+                           min="0" max="100" placeholder="Enter rating (0-100)" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="npv" class="form-label">Patient Reviews Count</label>
+                    <input type="number" class="form-control" id="npv" name="npv" 
+                           min="0" placeholder="Enter number of reviews" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="bi bi-calculator"></i> Predict Consultation Fee
+            </button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="alert alert-success mt-4" role="alert">
+            <h4 class="alert-heading">Prediction Result</h4>
+            <hr>
+            <p class="mb-0">{{ prediction_text }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

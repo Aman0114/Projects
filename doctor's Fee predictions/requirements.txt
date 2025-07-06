@@ -1,0 +1,8 @@
+beautifulsoup4
+requests
+gspread
+pandas
+selenium
+gspread-dataframe
+numpy
+scikit-learn
